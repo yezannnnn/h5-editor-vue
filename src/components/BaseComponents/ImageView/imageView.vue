@@ -1,23 +1,35 @@
 <template>
   <div class="imageView">
-    <img :src="require('@/assets/imageView.png')" />
-    <div class='title'>图片容器编辑...</div>
+    <img :src=" src || require('@/assets/imageView.png')" />
+    <div v-if='!src' class='title'>图片容器编辑...</div>
   </div>
 </template>
 <script>
 export default {
   name: 'baseComponent',
   components: {},
-  props: {},
+  props: {
+    src: {
+      type: String,
+      default: ''
+    },
+    isEdit: {
+      type: Boolean,
+      default: true,
+    }
+  },
   data() {
-    return {};
+    return {
+      styles: this.$props
+    };
   },
   methods: {
     handleClick() {
       this.$emit('on-click');
-    }
+    },
   },
 };
+
 </script>
 <style lang="less" scoped>
 .imageView {
@@ -39,5 +51,7 @@ export default {
     color: #bfbfbf;
   }
 }
-
+.imageH{
+  height: 150px;
+}
 </style>

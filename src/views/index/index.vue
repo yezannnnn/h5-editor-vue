@@ -7,14 +7,14 @@
         <Graduation />
         <SourceBox />
       </div>
-      <DataView />
+      <!-- <DataView /> -->
     </div>
   </div>
 </template>
 <script>
 import Header from '@/views/component/Header/header.vue';
 import MediaBox from '@/views/component/MediaBox/mediaBox.vue';
-import DataView from '@/views/component/DataView/dataView.vue';
+// import DataView from '@/views/component/DataView/dataView.vue';
 import Graduation from '@/views/component/Graduation/graduation.vue';
 import SourceBox from '@/views/component/SourceBox/sourceBox.vue';
 
@@ -26,9 +26,10 @@ export default {
     Header,
     MediaBox,
     SourceBox,
-    DataView,
+    // DataView,
     Graduation,
   },
+  methods: {}
 };
 
 </script>

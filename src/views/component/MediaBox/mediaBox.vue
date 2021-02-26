@@ -27,18 +27,18 @@ export default {
   components: {
     Tabs,
     TabPane,
-    BaseComponents
+    BaseComponents,
   },
   data() {
     return {
-      activeKey: '1'
+      activeKey: '1',
     };
   },
   methods: {
     changeTabs(key) {
       this.activeKey = key;
     },
-  }
+  },
 };
 </script>
 <style lang="less" scoped>

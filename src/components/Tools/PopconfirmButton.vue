@@ -14,12 +14,12 @@ export default {
   name: 'PopconfirmButton',
   components: {
     Button,
-    Popconfirm
+    Popconfirm,
   },
   props: {
     btnDisabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     placement: {
       type: String,
@@ -48,7 +48,7 @@ export default {
   methods: {
     handleClick() {
       this.$emit('on-click');
-    }
+    },
   },
 };
 </script>

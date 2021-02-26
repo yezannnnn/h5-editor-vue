@@ -12,12 +12,12 @@ export default {
   name: 'TooltipButton',
   components: {
     Button,
-    Tooltip
+    Tooltip,
   },
   props: {
     btnDisabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     placement: {
       type: String,
@@ -46,7 +46,7 @@ export default {
   methods: {
     handleClick() {
       this.$emit('on-click');
-    }
+    },
   },
 };
 

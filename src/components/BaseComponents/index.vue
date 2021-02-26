@@ -1,31 +1,39 @@
 <template>
   <div>
-    <li class='liItem' name='TextView' key='1'>
-      <TextView />
-    </li>
-    <li class='liItem' name='ImageView' key='2'>
-      <ImageView />
-    </li>
+    <div @dragstart="handleDragStart">
+      <div class='liItem' v-for='(item,index) in baseComponentData' :key='index' :data-index="index" draggable>
+        <DynamiComponent :currentComp='item.component' :propsOption='item.props' />
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import TextView from '@/components/BaseComponents/TextView/textView.vue';
-import ImageView from '@/components/BaseComponents/ImageView/imageView.vue';
+import DynamiComponent from '@/components/DynamiComponent/DynamiComponent.vue';
 
 export default {
   name: 'baseComponent',
   components: {
-    TextView,
-    ImageView
+    DynamiComponent,
   },
   props: {},
   data() {
-    return {};
+    return {
+      baseComponentData: this.$store.state.baseComponentData,
+      draggableOptions: { group: { name: 'source', pull: 'clone' }, sort: true }
+    };
   },
   methods: {
     handleClick() {
       this.$emit('on-click');
-    }
+    },
+    handleDragStart(e) {
+      e.dataTransfer.setData('index', e.target.dataset.index);
+      e.dataTransfer.setData('offsetX', e.offsetX);
+      e.dataTransfer.setData('clientWidth', e.target.clientWidth);
+      e.dataTransfer.setData('clientHeight', e.target.clientHeight);
+      e.dataTransfer.setData('offsetY', e.offsetY);
+      console.log(e);
+    },
   },
 };
 

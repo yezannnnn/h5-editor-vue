@@ -1,5 +1,5 @@
 <template>
-  <div class='tickRight' ref='tickRight' :style="{ 'height': clientHeught + 'px' }">
+  <div class='tickRight' ref='tickRight' :style="{ 'height': clientHeight + 'px' }">
     <div class="items" v-for='(item,index) in arr' :key='"arr"+index'>
       <div v-if='index === 0 || index % 10 === 0' class='tickHeightItem'><span>{{ index * 5 }}</span></div>
       <div v-else class='tickItem'></div>

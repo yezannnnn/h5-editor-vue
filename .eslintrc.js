@@ -15,5 +15,11 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'comma-dangle': 'warn',
     'max-len': 'warn',
+    'no-param-reassign': 'warn',
+    'prefer-template': 'warn',
+    'object-shorthand': 'warn',
+    'space-before-function-paren': 'warn',
+    'no-restricted-syntax': 'off',
+    'guard-for-in': 'off'
   },
 };

@@ -33,14 +33,14 @@ export default {
     Avatar,
     Button,
     TooltipButton,
-    PopconfirmButton
+    PopconfirmButton,
   },
   data() {
     return {
       avatar: {
         userName: '大帅',
         userAvatar: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eohpudyPkatMJWfuROsrNxaHZ531zPbbNPoHian5HJS8PZIVrdPJRVMg4r5BkjrXqaAQWnKKENhOicg/132?imageView2/1/w/80/h/80',
-      }
+      },
     };
   },
   methods: {
@@ -49,8 +49,8 @@ export default {
     },
     onDelete() {
       Message.success('删除成功！');
-    }
-  }
+    },
+  },
 };
 
 </script>
