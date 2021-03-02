@@ -1,5 +1,5 @@
 <template>
-  <div class="textView" :style='styles'>
+  <div class="textView" :style='getStyles()'>
     <div class="infos" v-if='!isEdit'>文本内容点击编辑...</div>
     <div v-else class='value'>{{ text }}</div>
     <div v-if='!isEdit && isHtml' class="value" v-html='text'></div>
@@ -18,34 +18,20 @@ export default {
       type: String,
       default: '文本内容点击编辑...'
     },
-    fontSize: {
-      type: String,
-      default: '14px'
-    },
-    color: {
-      type: String,
-      default: '#000'
-    },
-    textAlign: {
-      type: String,
-      default: 'left'
+    font: {
+      type: Object,
+      default () {
+        return {};
+      }
     },
     isHtml: {
       type: Boolean,
       default: false
     },
-    padding: {
-      type: String,
-      default: ''
-    },
-    margin: {
-      type: String,
-      default: ''
-    }
   },
   data() {
     return {
-      styles: this.$props
+
     };
   },
   mounted() {},
@@ -53,6 +39,16 @@ export default {
     handleClick() {
       this.$emit('on-click');
     },
+    getStyles() {
+      const result = {};
+      for (const i in this.font) {
+        result[i] = this.font[i];
+      }
+      ['fontSize'].forEach((attr) => {
+        result[attr] = this.font[attr] + 'px';
+      });
+      return result;
+    }
   },
 };
 
@@ -62,6 +58,8 @@ export default {
   user-select: none;
   width: 100%;
   height: 100%;
+  display: flex;
+  overflow: hidden;
 
   .infos {
     display: flex;
@@ -72,10 +70,13 @@ export default {
   }
 
   .value {
-    width: 100%;
     border: solid 0px;
     outline: none;
     resize: none;
+    white-space: normal;
+    overflow-y: hidden;
+    word-break: break-all;
+    display: flex;
     // padding: 10px;
   }
 

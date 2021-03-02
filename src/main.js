@@ -1,7 +1,11 @@
 import Vue from 'vue';
+import vcolorpicker from 'vcolorpicker';
+
 import App from './App.vue';
 import router from './router';
 import store from './store';
+
+Vue.use(vcolorpicker);
 
 Vue.config.productionTip = false;
 

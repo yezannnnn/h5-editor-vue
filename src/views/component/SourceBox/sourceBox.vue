@@ -1,20 +1,25 @@
 <template>
   <!-- "top": item.top || 0 + "px", "left": item.left || 0 + "px","width": item.width||0 + "px","height": item.height||0 + "px" -->
   <div class='sourceBox' id='sourceBox' @drop="handleDrop" @dragover.prevent>
-    <div class="liItem" v-for='(item,index) in sourceComponents' :key='index' @mousedown='(e) => { handleMouseDown(e,index) }' :style="{'top':`${item.top}px`,'left':`${item.left}px`, 'width': `${item.width}px`,'height': `${item.height}px`}">
+    <!-- <div class="liItem" v-for='(item,index) in sourceComponents' :key='index' @mousedown='(e) => { handleMouseDown(e,index) }' :style="{'top':`${item.top}px`,'left':`${item.left}px`, 'width': `${item.width}px`,'height': `${item.height}px`}"> -->
+    <Shape class="liItem" v-for='(item,index) in sourceComponents' :style="getShapeStyle(item)" :key='index' :dom='item' :active='item === curComponent'>
       <DynamiComponent :currentComp='item.component' :propsOption='item.props' />
-    </div>
+    </Shape>
+    <!-- </div> -->
   </div>
 </template>
 <script>
 // 异步加载组件
+import { mapState } from 'vuex';
 import DynamiComponent from '@/components/DynamiComponent/DynamiComponent.vue';
+import Shape from '@/components/Shape/Shape.vue';
 import { deepCopy } from '@/utils/utils';
 
 export default {
   name: 'sourceBox',
   components: {
     DynamiComponent,
+    Shape,
   },
   data() {
     return {
@@ -27,19 +32,22 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState([
+      'curComponent',
+    ])
+  },
   methods: {
     handleDrop(e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log(e);
       const comp = deepCopy(this.$store.state.baseComponentData[e.dataTransfer.getData('index')]);
       comp.top = e.offsetY - e.dataTransfer.getData('offsetY');
       comp.left = e.offsetX - e.dataTransfer.getData('offsetX');
       comp.width = e.dataTransfer.getData('clientWidth');
       comp.height = e.dataTransfer.getData('clientHeight');
+      comp.rotate = 0;
       comp.id = new Date().getTime();
-      console.log(comp);
-
       this.$store.dispatch('addSourceData', comp);
     },
     handleDragOver() {},
@@ -74,6 +82,17 @@ export default {
     },
     handleMouseMove() {},
     handleMouseUp() {},
+    getShapeStyle(style) {
+      const result = {};
+      ['width', 'height', 'top', 'left', 'rotate'].forEach((attr) => {
+        if (attr !== 'rotate') {
+          result[attr] = style[attr] + 'px';
+        } else {
+          result.transform = 'rotate(' + style[attr] + 'deg)';
+        }
+      });
+      return result;
+    },
   },
   created() {
     this.sourceComponents.forEach((item) => {
@@ -89,23 +108,12 @@ export default {
   min-height: 664px;
 
   background-color: #fff;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, .2);
+  box-shadow: -2px 0 4px 0 rgb(0 0 0 / 10%);
   position: absolute;
   left: 300px;
   top: 100px;
   transition: transform .3s ease-out;
   overflow: hidden;
-}
-
-.liItem {
-  user-select: none;
-  display: block;
-  position: absolute;
-  margin: 1px 0;
-}
-
-.liItem:hover {
-  box-shadow: 0 0 0 1px #40a9ff;
 }
 
 </style>

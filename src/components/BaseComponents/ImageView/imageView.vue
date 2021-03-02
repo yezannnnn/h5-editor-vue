@@ -1,5 +1,5 @@
 <template>
-  <div class="imageView">
+  <div class="imageView" :style='{ "height": !isEdit ? "150px" : "100%"  }'>
     <img :src=" src || require('@/assets/imageView.png')" />
     <div v-if='!src' class='title'>图片容器编辑...</div>
   </div>
@@ -35,7 +35,7 @@ export default {
 .imageView {
   display: flex;
   width: 100%;
-  height: 150px;
+  height: 100%;
   justify-content: center;
   align-items: center;
   background: #f3f3f3;
@@ -43,6 +43,7 @@ export default {
 
   img {
     width: 60px;
+    -webkit-user-drag: none;
     height: 50px;
   }
 

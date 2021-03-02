@@ -12,7 +12,7 @@ export default {
   components: {},
   data() {
     return {
-      clientWidth: 1000,
+      clientWidth: 50000,
       graduation: 0,
       arr: [],
     };

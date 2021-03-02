@@ -1,33 +1,106 @@
 <template>
-  <div class='dataView'>
-    <div class='imgView'>
+  <div class='dataView' :class='{floatRight : isScale}'>
+    <div class="scaleBtn" @click='isScale = !isScale'>
+      <img v-if='!isScale' :src="require('@/assets/rightarrow.png')">
+      <img v-else :src="require('@/assets/rightarrow2.png')">
+    </div>
+    <div class='imgView' v-show='!isScale && !curComponent'>
       <img class='img' :src="require('@/assets/nodata.png')" />
       <div class='imgt'>暂无数据去探索吧</div>
+    </div>
+    <div class='dataForm' v-show='curComponent && !isScale'>
+      <Tabs :activeKey='activeKey' @change='changeTabs'>
+        <TabPane tab="外观" key='1'>
+          <styleData />
+        </TabPane>
+        <TabPane tab="事件" key='2'></TabPane>
+      </Tabs>
     </div>
   </div>
 </template>
 <script>
+import {
+  Tabs,
+} from 'ant-design-vue';
+import { mapState } from 'vuex';
+import styleData from './styleData.vue';
+
+const { TabPane } = Tabs;
 export default {
   name: 'dataView',
   components: {
+    Tabs,
+    TabPane,
+    styleData,
   },
   data() {
-    return {};
+    return {
+      isScale: false,
+      activeKey: '1',
+      activeAttr: ['1', '2', '3', '4', '5', '6'],
+      form: {
+        color: '#000000'
+      },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
+    };
   },
-  methods: {},
+  computed: {
+    ...mapState([
+      'curComponent'
+    ])
+  },
+  watch: {
+  },
+  methods: {
+    changeTabs(key) {
+      this.activeKey = key;
+    },
+  },
 };
 
 </script>
 <style lang="less" scoped>
+.floatRight {
+  width: 0px !important;
+}
+
+.floatLeft {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .dataView {
-  width: 360px;
-  padding: 20px;
+  width: 300px;
+  // padding: 20px;
   z-index: 1;
   position: fixed;
   right: 0px;
   height: 100%;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+
+  .scaleBtn {
+    height: 80px;
+    width: 20px;
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: -2px 0 4px 0 rgb(0 0 0 / 10%);
+    background: #fff;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      margin-left: 3px;
+      width: 18px;
+    }
+  }
 
   .imgView {
     position: relative;
@@ -38,6 +111,7 @@ export default {
 
     .img {
       margin-bottom: 48%;
+      width: 90%;
     }
 
     .imgt {
@@ -47,6 +121,92 @@ export default {
       margin-top: 80%;
     }
   }
+
+  .dataForm {
+    .f_header {}
+  }
+
+  .areaForm {
+    padding-bottom: 16px;
+    // padding: 12px 16px;
+    // border-bottom: 1px solid #d9d9d9;
+  }
+
+}
+
+// tabs
+/deep/ .ant-tabs-bar {
+  margin: 0;
+}
+
+/deep/ .ant-tabs-nav-wrap {
+  display: flex;
+}
+
+/deep/ .ant-tabs-tab {
+  margin: 0 12px;
+  padding: 12px 0px;
+}
+
+// co
+/deep/ .ant-collapse {
+  background: none;
+
+  .ant-collapse-header {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(65, 80, 88);
+    line-height: 20px;
+    text-align: left !important;
+  }
+}
+
+// from
+/deep/ .ant-form label {
+  font-size: 12px;
+  color: rgb(65, 80, 88);
+}
+
+// input
+/deep/ .ant-input {
+  border-radius: 0px;
+}
+
+// nums
+/deep/ .ant-input-number {
+  border-radius: 0px;
+}
+
+/deep/ .ant-form-item {
+  margin-bottom: 12px;
+}
+
+// colorPicker
+/deep/ .m-colorPicker .box {
+  position: fixed;
+
+}
+
+/deep/ .m-colorPicker .box.open {
+  z-index: 999;
+}
+
+// fromitem
+/deep/ .ant-form-item-control {
+  text-align: left;
+}
+
+// radio
+/deep/ .ant-radio-button-wrapper:first-child {
+  border-radius: 0px;
+}
+
+/deep/ .ant-radio-button-wrapper:last-child {
+  border-radius: 0px;
+}
+
+/deep/ .ant-select-selection {
+  border-radius: 0px;
 }
 
 </style>

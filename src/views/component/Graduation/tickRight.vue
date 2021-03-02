@@ -12,7 +12,7 @@ export default {
   components: {},
   data() {
     return {
-      clientHeight: 1000,
+      clientHeight: 50000,
       graduation: 0,
       arr: [],
     };

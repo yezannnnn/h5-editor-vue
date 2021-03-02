@@ -10,19 +10,36 @@ export default new Vuex.Store({
       id: 222123,
       type: 'BaseComponents',
       name: 'TextView',
-      isEdit: false,
+      width: 100,
+      height: 100,
+      rotate: 0,
+      top: 0,
+      left: 0,
       component: () => import('@/components/BaseComponents/TextView/TextView.vue'),
       props: {
         text: '库库不知道怎么做活',
+        font: {
+          fontSize: 14,
+          fontWeight: 400,
+          color: '#000000',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+        },
         isEdit: false,
       }
     }, {
       id: 1231233,
       type: 'BaseComponents',
       name: 'ImageView',
-      isEdit: false,
+      width: 100,
+      height: 100,
+      rotate: 0,
+      top: 0,
+      left: 0,
       component: () => import('@/components/BaseComponents/ImageView/ImageView.vue'),
-      props: {}
+      props: {
+        isEdit: false,
+      }
     }],
     curComponent: null,
   },
@@ -42,8 +59,6 @@ export default new Vuex.Store({
       if (width) state.curComponent.width = width;
       if (height) state.curComponent.height = height;
       if (rotate) state.curComponent.rotate = rotate;
-
-      debugger;
     },
   },
   actions: {
