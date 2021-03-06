@@ -6,12 +6,12 @@
     </div>
     <div class="content">
       <div class='btns'><Button type='primary'>模板库</Button></div>
-      <div class='btns'><Button class='btns' type="link">保存模板</Button></div>
+      <div class='btns'><Button class='btns' type="link" @click='saveVue'>保存模板</Button></div>
       <div class='btns'>
-        <TooltipButton title="复制数据" placement="top" btnType="link" btnTitle="" :btnDisabled='false' @on-click='onCopyData' icon='copy' />
+        <TooltipButton title="复制数据" placement="top" btnType="link" btnTitle="" @on-click='onCopyData' icon='copy' :btnDisabled='!curComponent' />
       </div>
       <div class='btns'>
-        <PopconfirmButton title="确认清空当前数据，不可恢复请慎重！" placement="top" btnType="link" btnTitle="" :btnDisabled='false' @on-click='onDelete' icon='delete' />
+        <PopconfirmButton title="确认删除当前选中组件，不可恢复请慎重！" placement="top" btnType="link" btnTitle="" :btnDisabled='!curComponent' @on-click='onDelete' icon='delete' />
       </div>
     </div>
     <div class="right">
@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import { Button, Avatar, Message } from 'ant-design-vue';
 import TooltipButton from '@/components/Tools/TooltipButton.vue';
 import PopconfirmButton from '@/components/Tools/PopconfirmButton.vue';
@@ -43,12 +44,24 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState({
+      curComponent: (state) => state.components.curComponent,
+    }),
+  },
   methods: {
-    onCopyData() {
-      Message.success('你确认了我看');
-    },
     onDelete() {
-      Message.success('删除成功！');
+      this.$store.dispatch('delSourceData', this.curComponent.id).then(() => {
+        Message.success('删除成功！');
+      });
+    },
+    onCopyData() {
+      this.$store.dispatch('copyInSourceData').then(() => {
+        Message.success('操作成功！');
+      });
+    },
+    saveVue() {
+      this.$store.dispatch('makeVue');
     },
   },
 };

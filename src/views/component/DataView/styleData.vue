@@ -3,10 +3,13 @@
     <CollapsePanel key='1' header="坐标及宽高">
       <areaForm />
     </CollapsePanel>
-    <CollapsePanel key='2' header="文本" v-if='curComponent && curComponent.props.text.length >= 0'>
-      <textForm />
+    <CollapsePanel key='2' header="文本" v-if='curComponent && curComponent.name === "TextView"'>
+      <textForm label='文本内容' />
     </CollapsePanel>
-    <CollapsePanel key='3' header="字体" v-if='curComponent && curComponent.props.font'>
+    <CollapsePanel key='3' header="图片" v-if='curComponent && curComponent.name === "ImageView"'>
+      <textForm label='图片Url' mode='textarea' />
+    </CollapsePanel>
+    <CollapsePanel key='4' header="字体" v-if='curComponent && curComponent.props.font'>
       <fontForm />
     </CollapsePanel>
   </Collapse>
@@ -35,10 +38,25 @@ export default {
   },
   methods: {},
   computed: {
-    ...mapState(['curComponent'])
+    ...mapState({
+      curComponent: (state) => state.components.curComponent,
+    }),
   }
 };
 
 </script>
 <style lang="less">
+// co
+/deep/ .ant-collapse {
+  background: none;
+
+  .ant-collapse-header {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(65, 80, 88);
+    line-height: 20px;
+    text-align: left !important;
+  }
+}
+
 </style>

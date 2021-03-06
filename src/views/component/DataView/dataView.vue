@@ -4,10 +4,11 @@
       <img v-if='!isScale' :src="require('@/assets/rightarrow.png')">
       <img v-else :src="require('@/assets/rightarrow2.png')">
     </div>
-    <div class='imgView' v-show='!isScale && !curComponent'>
+    <div class='imgView' v-show='!isScale && !curComponent && !curPage'>
       <img class='img' :src="require('@/assets/nodata.png')" />
       <div class='imgt'>暂无数据去探索吧</div>
     </div>
+    <!-- 组件设置属性 -->
     <div class='dataForm' v-show='curComponent && !isScale'>
       <Tabs :activeKey='activeKey' @change='changeTabs'>
         <TabPane tab="外观" key='1'>
@@ -15,6 +16,10 @@
         </TabPane>
         <TabPane tab="事件" key='2'></TabPane>
       </Tabs>
+    </div>
+    <!-- 页面设置属性 -->
+    <div class='pageForm' v-show='!curComponent && curPage && !isScale'>
+      <pageData />
     </div>
   </div>
 </template>
@@ -24,6 +29,7 @@ import {
 } from 'ant-design-vue';
 import { mapState } from 'vuex';
 import styleData from './styleData.vue';
+import pageData from './pageData.vue';
 
 const { TabPane } = Tabs;
 export default {
@@ -32,6 +38,7 @@ export default {
     Tabs,
     TabPane,
     styleData,
+    pageData,
   },
   data() {
     return {
@@ -46,16 +53,16 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      'curComponent'
-    ])
+    ...mapState({
+      curComponent: (state) => state.components.curComponent,
+      curPage: (state) => state.pageSetting.curPage,
+    }),
   },
-  watch: {
-  },
+  watch: {},
   methods: {
     changeTabs(key) {
       this.activeKey = key;
-    },
+    }
   },
 };
 
@@ -122,16 +129,6 @@ export default {
     }
   }
 
-  .dataForm {
-    .f_header {}
-  }
-
-  .areaForm {
-    padding-bottom: 16px;
-    // padding: 12px 16px;
-    // border-bottom: 1px solid #d9d9d9;
-  }
-
 }
 
 // tabs
@@ -170,6 +167,7 @@ export default {
 // input
 /deep/ .ant-input {
   border-radius: 0px;
+  font-size: 12px;
 }
 
 // nums
@@ -177,6 +175,16 @@ export default {
   border-radius: 0px;
 }
 
+/deep/ .ant-input-number-sm input {
+  font-size: 12px;
+}
+
+// select
+/deep/ .ant-select-sm {
+  font-size: 12px;
+}
+
+// formitem
 /deep/ .ant-form-item {
   margin-bottom: 12px;
 }
@@ -184,11 +192,18 @@ export default {
 // colorPicker
 /deep/ .m-colorPicker .box {
   position: fixed;
+}
 
+/deep/ .m-colorPicker .colorBtn {
+  border: 1px solid #d9d9d9;
 }
 
 /deep/ .m-colorPicker .box.open {
   z-index: 999;
+}
+
+/deep/ .m-colorPicker {
+  margin-bottom: -3px;
 }
 
 // fromitem

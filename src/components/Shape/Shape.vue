@@ -54,9 +54,9 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      'curComponent'
-    ])
+    ...mapState({
+      curComponent: (state) => state.components.curComponent,
+    }),
   },
   mounted() {
     if (this.curComponent) {
@@ -70,8 +70,11 @@ export default {
       component.props.isEdit = true;
       const pos = {};
       e.stopPropagation();
-      this.$store.commit('setCurComponent', component);
-      console.log('component==>', component);
+
+      this.$store.commit('components/setComponentStatus', 'drop');
+      this.$store.commit('components/setCurComponent', component);
+      this.$store.commit('pageSetting/clearCurPage');
+
       const startY = e.clientY;
       const startX = e.clientX;
       // 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
@@ -84,7 +87,7 @@ export default {
         pos.top = currY - startY + startTop;
         pos.left = currX - startX + startLeft;
         // 修改当前组件样式
-        this.$store.commit('setShapeStyle', pos);
+        this.$store.commit('components/setShapeStyle', pos);
       };
 
       const up = () => {
@@ -164,7 +167,7 @@ export default {
         pos.width = newWidth > 0 ? newWidth : 0;
         pos.left = left + (hasL ? disX : 0);
         pos.top = top + (hasT ? disY : 0);
-        this.$store.commit('setShapeStyle', pos);
+        this.$store.commit('components/setShapeStyle', pos);
       };
 
       const up = () => {
@@ -259,7 +262,6 @@ export default {
   user-select: none;
   position: absolute;
   display: flex;
-
   // margin: 1px 0;
 }
 

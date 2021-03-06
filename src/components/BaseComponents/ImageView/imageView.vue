@@ -1,13 +1,25 @@
 <template>
-  <div class="imageView" :style='{ "height": !isEdit ? "150px" : "100%"  }'>
-    <img :src=" src || require('@/assets/imageView.png')" />
-    <div v-if='!src' class='title'>图片容器编辑...</div>
+  <div class="imageView" :style='{ "height": !isEdit ? "150px" : "100%", "background": !src ? "#f3f3f3" : "none" }'>
+    <!-- <div class="wrapper"> -->
+    <img v-if='!isEdit || !src' :src="require('@/assets/imageView.png')" :style='looks' />
+    <vimage v-else fit='contain' :src="src" />
+    <!-- </div> -->
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
+import { Image as vimage } from 'vant';
+
 export default {
   name: 'baseComponent',
-  components: {},
+  components: {
+    vimage,
+  },
+  computed: {
+    ...mapState({
+      curComponent: (state) => state.components.curComponent,
+    }),
+  },
   props: {
     src: {
       type: String,
@@ -16,11 +28,15 @@ export default {
     isEdit: {
       type: Boolean,
       default: true,
+    },
+    looks: {
+      type: Object
     }
   },
   data() {
     return {
-      styles: this.$props
+      styles: this.$props,
+
     };
   },
   methods: {
@@ -36,9 +52,9 @@ export default {
   display: flex;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   justify-content: center;
   align-items: center;
-  background: #f3f3f3;
   flex-flow: column;
 
   img {
@@ -52,7 +68,18 @@ export default {
     color: #bfbfbf;
   }
 }
-.imageH{
+
+.imageH {
   height: 150px;
 }
+
+/deep/ .van-image__img {
+  -webkit-user-drag: none;
+}
+
+/deep/ .van-image {
+  width: 100%;
+  height: 100%;
+}
+
 </style>

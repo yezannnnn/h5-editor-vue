@@ -53,18 +53,19 @@ export default {
     white-space: nowrap;
     margin-left: 360px;
 
-    .returnBack{
-      position: absolute;
-      top:0;
-      left: 0;
+    .returnBack {
+      position: fixed;
+      top: 56px;
+      left: 360px;
       height: 20px;
       width: 20px;
       background: #1890ff;
       cursor: pointer;
     }
   }
+
   .canvas::-webkit-scrollbar {
-    width:0;
+    width: 0;
   }
 }
 

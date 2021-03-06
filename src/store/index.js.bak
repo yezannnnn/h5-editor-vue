@@ -1,0 +1,119 @@
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { deepCopy } from '@/utils/utils';
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+  state: {
+    sourceData: [],
+    baseComponentData: [{
+      id: 222123,
+      type: 'BaseComponents',
+      name: 'TextView',
+      width: 100,
+      height: 100,
+      rotate: 0,
+      top: 0,
+      left: 0,
+      position: 'absolute',
+      component: () => import('@/components/BaseComponents/TextView/TextView.vue'),
+      props: {
+        text: '文本内容点击编辑...',
+        font: {
+          fontSize: 14,
+          fontWeight: 400,
+          color: '#000000',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+        },
+        isEdit: false,
+      }
+    }, {
+      id: 1231233,
+      type: 'BaseComponents',
+      name: 'ImageView',
+      width: 100,
+      height: 100,
+      rotate: 0,
+      top: 0,
+      left: 0,
+
+      position: 'absolute',
+      component: () => import('@/components/BaseComponents/ImageView/ImageView.vue'),
+      props: {
+        src: '',
+        isEdit: false,
+      }
+    }],
+    curComponent: null,
+    pageSetting: {
+      title: '',
+      backgroundUrl: '',
+      backgroundColor: '#fff',
+      backgroundSize: 'contain',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      height: 664,
+      width: 375,
+    },
+    curPage: null,
+  },
+  mutations: {
+    setCurComponent(state, component) {
+      state.curComponent = component;
+      state.curPage = null;
+    },
+    setShapeStyle(state, {
+      top,
+      left,
+      width,
+      height,
+      rotate,
+    }) {
+      if (top) state.curComponent.top = top;
+      if (left) state.curComponent.left = left;
+      if (width) state.curComponent.width = width;
+      if (height) state.curComponent.height = height;
+      if (rotate) state.curComponent.rotate = rotate;
+    },
+    setPageSetting(state, setting) {
+      state.pageSetting = setting;
+    },
+  },
+  actions: {
+    addSourceData({ state }, sourceData) {
+      state.sourceData.push(sourceData);
+    },
+    // 删除画布中选中组件
+    delSourceData({ state }, id) {
+      state.sourceData.forEach((i, ind) => {
+        if (i.id === id) {
+          state.sourceData.splice(ind, 1);
+          state.curComponent = null;
+        }
+      });
+    },
+    // 复制画布中选中组件
+    copyInSourceData({ state }) {
+      const copyComponent = deepCopy(state.curComponent);
+      copyComponent.id = new Date().getTime();
+      // 复制的组件 稍微偏移好区分
+      copyComponent.top += 10;
+      copyComponent.left += 10;
+      state.sourceData.push(copyComponent);
+    },
+    // 选中页面设置
+    selectPage({ state }) {
+      state.curPage = deepCopy(state.pageSetting);
+      state.curComponent = null;
+    },
+    // 生成模板
+    makeVue({ state }) {
+      console.log(`pageSetting==>${state.pageSetting}`);
+      console.log(`sourceData==>${state.sourceData}`);
+      debugger;
+    }
+  },
+  modules: {},
+});

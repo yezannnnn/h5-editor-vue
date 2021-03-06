@@ -4,7 +4,7 @@
       <InputNumber size="small" :default-value="14" :max='100' :min='12' v-model='curComponent && curComponent.props.font.fontSize'></InputNumber>
     </FormModelItem>
     <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='颜色'>
-      <colorPicker style='margin-bottom: -5px;' v-model='curComponent && curComponent.props.font.color'></colorPicker>
+      <colorPicker v-model='curComponent && curComponent.props.font.color'></colorPicker>
     </FormModelItem>
     <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='字体粗细'>
       <!-- <InputNumber size="small" :default-value="form.weight" step='100' :max='800' :min='100'></InputNumber> -->
@@ -71,7 +71,9 @@ export default {
     };
   },
   computed: {
-    ...mapState(['curComponent'])
+    ...mapState({
+      curComponent: (state) => state.components.curComponent,
+    }),
   },
   methods: {},
 };

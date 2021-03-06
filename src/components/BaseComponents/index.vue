@@ -18,7 +18,7 @@ export default {
   props: {},
   data() {
     return {
-      baseComponentData: this.$store.state.baseComponentData,
+      baseComponentData: this.$store.getters.baseComponentData,
       draggableOptions: { group: { name: 'source', pull: 'clone' }, sort: true }
     };
   },
