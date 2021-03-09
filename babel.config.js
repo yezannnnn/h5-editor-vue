@@ -11,7 +11,14 @@ module.exports = {
     ['import', {
       libraryName: 'ant-design-vue',
       libraryDirectory: 'es',
-      style: "css",
+      style: 'css',
     }],
+    ['component',
+      {
+        libraryName: 'element-ui',
+        styleLibraryName: 'theme-chalk',
+        style: true,
+      }
+    ]
   ],
 };

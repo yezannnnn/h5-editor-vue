@@ -92,6 +92,7 @@ export default {
     clickStatus() {
       this.$store.commit('contextMenu/hideContextMenu');
       this.$store.commit('components/setComponentStatus', null);
+      this.$store.commit('components/clearCurComponent');
       Message.success('操作成功！');
     }
   },

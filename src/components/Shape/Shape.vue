@@ -10,7 +10,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-// import { mod360 } from '@/utils/translate';
+import { mod360 } from '@/utils/translate';
 
 export default {
   name: 'shape',
@@ -80,6 +80,8 @@ export default {
       // 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
       const startTop = Number(component.top);
       const startLeft = Number(component.left);
+
+      this.cursors = this.getCursor(); // 根据旋转角度获取光标位置
 
       const move = (moveEvent) => {
         const currX = moveEvent.clientX;
@@ -207,52 +209,52 @@ export default {
         // 获取旋转的角度值
         pos.rotate = startRotate + rotateDegreeAfter - rotateDegreeBefore;
         // 修改当前组件样式
-        this.$store.commit('setShapeStyle', pos);
+        this.$store.commit('components/setShapeStyle', pos);
       };
 
       const up = () => {
         // hasMove && this.$store.commit('recordSnapshot');
         document.removeEventListener('mousemove', move);
         document.removeEventListener('mouseup', up);
-        // this.cursors = this.getCursor(); // 根据旋转角度获取光标位置
+        this.cursors = this.getCursor(); // 根据旋转角度获取光标位置
       };
 
       document.addEventListener('mousemove', move);
       document.addEventListener('mouseup', up);
     },
-    // getCursor() {
-    //   const {
-    //     angleToCursor,
-    //     initialAngle,
-    //     pointList,
-    //     curComponent
-    //   } = this;
-    //   console.log(curComponent);
-    //   const rotate = mod360(curComponent.rotate); // 取余 360
-    //   const result = {};
-    //   let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
-    //   pointList.forEach((point) => {
-    //     const angle = mod360(initialAngle[point] + rotate);
-    //     const len = angleToCursor.length;
-    //     while (true) {
-    //       lastMatchIndex = (lastMatchIndex + 1) % len;
-    //       const angleLimit = angleToCursor[lastMatchIndex];
-    //       if (angle < 23 || angle >= 338) {
-    //         result[point] = 'nw-resize';
+    getCursor() {
+      const {
+        angleToCursor,
+        initialAngle,
+        pointList,
+        curComponent
+      } = this;
+      console.log(curComponent);
+      const rotate = mod360(curComponent.rotate); // 取余 360
+      const result = {};
+      let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
+      pointList.forEach((point) => {
+        const angle = mod360(initialAngle[point] + rotate);
+        const len = angleToCursor.length;
+        while (true) {
+          lastMatchIndex = (lastMatchIndex + 1) % len;
+          const angleLimit = angleToCursor[lastMatchIndex];
+          if (angle < 23 || angle >= 338) {
+            result[point] = 'nw-resize';
 
-    //         return;
-    //       }
+            return;
+          }
 
-    //       if (angleLimit.start <= angle && angle < angleLimit.end) {
-    //         result[point] = angleLimit.cursor + '-resize';
+          if (angleLimit.start <= angle && angle < angleLimit.end) {
+            result[point] = angleLimit.cursor + '-resize';
 
-    //         return;
-    //       }
-    //     }
-    //   });
+            return;
+          }
+        }
+      });
 
-    //   return result;
-    // },
+      return result;
+    },
   },
 };
 

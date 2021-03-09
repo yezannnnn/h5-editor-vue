@@ -1,7 +1,7 @@
 const state = {
   curComponent: null,
   baseComponentData: [{
-    id: 222123,
+    id: 1,
     type: 'BaseComponents',
     name: 'TextView',
     width: 100,
@@ -17,13 +17,13 @@ const state = {
         fontSize: 14,
         fontWeight: 400,
         color: '#000000',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        alignItems: 'center',
+        justifyContent: 'center',
       },
       isEdit: false,
     }
   }, {
-    id: 1231233,
+    id: 2,
     type: 'BaseComponents',
     name: 'ImageView',
     width: 100,
@@ -35,6 +35,36 @@ const state = {
     component: () => import('@/components/BaseComponents/ImageView/ImageView.vue'),
     props: {
       src: '',
+      isEdit: false,
+    }
+  }, {
+    id: 3,
+    type: 'BaseComponents',
+    name: 'Rectangle',
+    width: 100,
+    height: 100,
+    rotate: 0,
+    top: 0,
+    left: 0,
+    position: 'absolute',
+    component: () => import('@/components/BaseComponents/Rectangle/Rectangle.vue'),
+    props: {
+      text: '',
+      font: {
+        fontSize: 14,
+        fontWeight: 400,
+        color: '#000000',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      looks: {
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderRadius: 0,
+        isYuan: false,
+        borderColor: '#f3f3f3',
+        background: '#ffffff',
+      },
       isEdit: false,
     }
   }],

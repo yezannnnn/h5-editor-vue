@@ -15,7 +15,7 @@
             <Input type='textarea' size='small' v-model='pageSetting.backgroundUrl' placeholder='请输入在线Url（目前只支持网络图片）' @change='getImageInfo' />
           </FormModelItem>
           <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='背景色'>
-            <colorPicker v-model='pageSetting.backgroundColor'></colorPicker>
+            <el-color-picker v-model='pageSetting.backgroundColor'></el-color-picker>
           </FormModelItem>
         </FormModel>
       </CollapsePanel>

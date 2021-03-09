@@ -13,7 +13,6 @@ const mutations = {
     state.sourceData.forEach((i, ind) => {
       if (i.id === id) {
         state.sourceData.splice(ind, 1);
-        state.curComponent = null;
       }
     });
   },

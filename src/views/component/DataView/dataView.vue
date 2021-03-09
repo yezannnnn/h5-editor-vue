@@ -190,20 +190,20 @@ export default {
 }
 
 // colorPicker
-/deep/ .m-colorPicker .box {
-  position: fixed;
+
+/deep/ .el-color-picker {
+  display: flex;
+  align-items: center;
 }
 
-/deep/ .m-colorPicker .colorBtn {
-  border: 1px solid #d9d9d9;
+/deep/ .el-color-dropdown__btns {
+  display: flex;
+  align-items: center;
 }
 
-/deep/ .m-colorPicker .box.open {
-  z-index: 999;
-}
-
-/deep/ .m-colorPicker {
-  margin-bottom: -3px;
+/deep/ .el-color-picker__trigger {
+  width: 25px;
+  height: 25px;
 }
 
 // fromitem

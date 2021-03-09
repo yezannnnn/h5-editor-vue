@@ -1,9 +1,9 @@
 <template>
-  <Collapse :activeKey='activeAttr' expandIconPosition='right' :bordered='false'>
+  <Collapse :activeKey='activeAttr' expandIconPosition='right' :bordered='false' style='max-height: 90vh;overflow: scroll;'>
     <CollapsePanel key='1' header="坐标及宽高">
       <areaForm />
     </CollapsePanel>
-    <CollapsePanel key='2' header="文本" v-if='curComponent && curComponent.name === "TextView"'>
+    <CollapsePanel key='2' header="文本" v-if='curComponent && ["TextView", "Rectangle"].includes(curComponent.name)'>
       <textForm label='文本内容' />
     </CollapsePanel>
     <CollapsePanel key='3' header="图片" v-if='curComponent && curComponent.name === "ImageView"'>
@@ -11,6 +11,9 @@
     </CollapsePanel>
     <CollapsePanel key='4' header="字体" v-if='curComponent && curComponent.props.font'>
       <fontForm />
+    </CollapsePanel>
+    <CollapsePanel key='5' header="外观" v-if='curComponent && curComponent.props.looks'>
+      <lookForm />
     </CollapsePanel>
   </Collapse>
 </template>
@@ -20,6 +23,7 @@ import { Collapse } from 'ant-design-vue';
 import areaForm from './components/areaForm.vue';
 import textForm from './components/textForm.vue';
 import fontForm from './components/fontForm.vue';
+import lookForm from './components/lookForm.vue';
 
 const CollapsePanel = Collapse.Panel;
 export default {
@@ -28,6 +32,7 @@ export default {
     areaForm,
     textForm,
     fontForm,
+    lookForm,
     Collapse,
     CollapsePanel,
   },
