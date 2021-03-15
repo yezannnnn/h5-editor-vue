@@ -3,11 +3,12 @@ import { deepCopy } from '@/utils/utils';
 const state = {
   pageSetting: {
     title: '',
-    backgroundUrl: '',
+    background: '',
     backgroundColor: '#fff',
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
+    position: 'relative',
     height: 664,
     width: 375,
   },

@@ -5,16 +5,10 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
 
 export default {
   name: 'baseComponent',
   components: {},
-  computed: {
-    ...mapState({
-      curComponent: (state) => state.components.curComponent,
-    }),
-  },
   props: {
     src: {
       type: String,

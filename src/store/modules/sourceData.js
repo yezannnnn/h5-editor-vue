@@ -4,6 +4,9 @@ const state = {
   sourceData: [],
 };
 const mutations = {
+  setSourceData: (state, sourceData) => {
+    state.sourceData = sourceData;
+  },
   // addSourceData
   addSourceData: (state, sourceData) => {
     state.sourceData.push(sourceData);
@@ -19,8 +22,8 @@ const mutations = {
 };
 const actions = {
   // 复制画布中选中组件
-  copyInSourceData({ state }) {
-    const copyComponent = deepCopy(state.curComponent);
+  copyInSourceData({ state }, curComponent) {
+    const copyComponent = deepCopy(curComponent);
     copyComponent.id = new Date().getTime();
     // 复制的组件 稍微偏移好区分
     copyComponent.top += 10;
@@ -48,7 +51,6 @@ const actions = {
         index = ind;
       }
     });
-    debugger;
     const swp = state.sourceData[index];
     state.sourceData.splice(index, 1);
     state.sourceData.unshift(swp);

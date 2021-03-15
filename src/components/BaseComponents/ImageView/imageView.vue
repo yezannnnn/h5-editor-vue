@@ -1,13 +1,12 @@
 <template>
   <div class="imageView" :style='{ "height": !isEdit ? "150px" : "100%", "background": !src ? "#f3f3f3" : "none" }'>
     <!-- <div class="wrapper"> -->
-    <img v-if='!isEdit || !src' :src="require('@/assets/imageView.png')" :style='looks' />
+    <img v-if='!isEdit || !src' src="https://static.lianhaikeji.com/images/20210315/84ba23eb5f5748dd9dfef87ac56d7013.png" :style='looks' />
     <vimage v-else fit='contain' :src="src" />
     <!-- </div> -->
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
 import { Image as vimage } from 'vant';
 
 export default {
@@ -15,11 +14,7 @@ export default {
   components: {
     vimage,
   },
-  computed: {
-    ...mapState({
-      curComponent: (state) => state.components.curComponent,
-    }),
-  },
+
   props: {
     src: {
       type: String,

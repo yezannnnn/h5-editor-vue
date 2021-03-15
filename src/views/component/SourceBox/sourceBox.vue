@@ -5,15 +5,18 @@
     </div>
     <div class="canvas">
       <div class='sourceBox' id='sourceBox' :style='getBackgroundStyle()' @drop="handleDrop" @dragover.prevent>
-        <Shape v-for='(item,index) in sourceComponents' :style="getShapeStyle(item)" :key='index' :dom='item' :active='item === curComponent'>
+        <Shape v-for='(item,index) in sourceData' :style="getShapeStyle(item)" :key='index' :dom='item' :active='item === curComponent'>
           <DynamiComponent :currentComp='item.component' :propsOption='item.props' />
         </Shape>
+        <!-- 右键菜单 -->
         <ContextMenu />
+        <!-- 标线 -->
+        <MakeLine />
       </div>
     </div>
-    <div class="bottomBtns">
+    <!-- <div class="bottomBtns">
       容器高度：{{ this.pageSetting.height > 664 ? this.pageSetting.height + '（可滚动）' : this.pageSetting.height }}
-    </div>
+    </div> -->
     <!-- 右键菜单 -->
   </div>
 </template>
@@ -23,6 +26,7 @@ import { mapState } from 'vuex';
 import DynamiComponent from '@/components/DynamiComponent/DynamiComponent.vue';
 import Shape from '@/components/Shape/Shape.vue';
 import ContextMenu from '@/components/ContextMenu/ContextMenu.vue';
+import MakeLine from '@/components/MakeLine/MakeLine.vue';
 import { deepCopy } from '@/utils/utils';
 
 export default {
@@ -31,10 +35,10 @@ export default {
     DynamiComponent,
     Shape,
     ContextMenu,
+    MakeLine,
   },
   data() {
     return {
-      sourceComponents: this.$store.getters.sourceData,
       boxX: 0,
       boxY: 0,
       start: { // 选中区域的起点
@@ -46,6 +50,7 @@ export default {
   },
   computed: {
     ...mapState({
+      sourceData: (state) => state.sourceData.sourceData,
       curComponent: (state) => state.components.curComponent,
       curPage: (state) => state.pageSetting.curPage,
       pageSetting: (state) => state.pageSetting.pageSetting,
@@ -55,11 +60,15 @@ export default {
     handleDrop(e) {
       e.preventDefault();
       e.stopPropagation();
+      console.log(e);
       const comp = deepCopy(this.$store.getters.baseComponentData[e.dataTransfer.getData('index')]);
+
       comp.top = e.offsetY - e.dataTransfer.getData('offsetY');
       comp.left = e.offsetX - e.dataTransfer.getData('offsetX');
-      comp.width = e.dataTransfer.getData('clientWidth');
-      comp.height = e.dataTransfer.getData('clientHeight');
+      console.log(e.dataTransfer.getData('offsetY'));
+      console.log(e.dataTransfer.getData('offsetX'));
+      comp.width = parseInt(e.dataTransfer.getData('clientWidth'), 0);
+      comp.height = parseInt(e.dataTransfer.getData('clientHeight'), 0);
       comp.rotate = 0;
       comp.id = new Date().getTime();
       this.$store.commit('sourceData/addSourceData', comp);
@@ -120,10 +129,10 @@ export default {
     // 获取样式方法
     getBackgroundStyle() {
       const styles = {};
-      if (!this.pageSetting.backgroundUrl) {
+      if (!this.pageSetting.background) {
         styles.background = this.pageSetting.backgroundColor;
       } else {
-        styles.background = `url(${this.pageSetting.backgroundUrl})`;
+        styles.background = `url(${this.pageSetting.background})`;
         styles.backgroundSize = this.pageSetting.backgroundSize;
         styles.backgroundRepeat = this.pageSetting.backgroundRepeat;
         styles.backgroundPosition = this.pageSetting.backgroundPosition;
@@ -139,7 +148,6 @@ export default {
       e.preventDefault();
       let { target, offsetY: top, offsetX: left } = e;
       while (target instanceof SVGElement) {
-        debugger;
         target = target.parentNode;
       }
       console.log(e);
@@ -156,7 +164,7 @@ export default {
     },
   },
   created() {
-    this.sourceComponents.forEach((item) => {
+    this.sourceData.forEach((item) => {
       item.component = () => import('@/components/' + item.type + '/' + item.name + '/' + item.name + '.vue');
     });
   },
@@ -209,7 +217,7 @@ export default {
   width: 375px;
   transition: transform .3s ease-out;
   // overflow-x: hidden;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   height: 664px;
   left: 300px;
   top: 100px;
@@ -219,6 +227,7 @@ export default {
 
 .sourceBox {
   background-color: #fff;
+  overflow: hidden;
 }
 
 </style>

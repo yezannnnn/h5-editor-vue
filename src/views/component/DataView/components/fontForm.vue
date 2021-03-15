@@ -7,21 +7,21 @@
       <el-color-picker v-model='curComponent && curComponent.props.font.color'></el-color-picker>
     </FormModelItem>
     <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='字体粗细'>
-      <InputNumber size="small" :default-value="form.weight" step='100' :max='800' :min='100'></InputNumber>
+      <!-- <InputNumber size="small" :default-value="form.weight" step='100' :max='800' :min='100'></InputNumber> -->
       <Select size='small' :default-value="400" v-model='curComponent && curComponent.props.font.fontWeight'>
         <SelectOption :value="400">标准</SelectOption>
         <SelectOption :value='800'>粗体</SelectOption>
       </Select>
     </FormModelItem>
     <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='文本对齐'>
-      <RadioGroup default-value="left" button-style="solid" size='small' v-model='curComponent && curComponent.props.font.justifyContent'>
-        <RadioButton value="flex-start">
+      <RadioGroup default-value="left" button-style="solid" size='small' v-model='curComponent && curComponent.props.font.textAlign'>
+        <RadioButton value="left">
           <aicon type="align-left" />
         </RadioButton>
         <RadioButton value="center">
           <aicon type="align-center" />
         </RadioButton>
-        <RadioButton value="flex-end">
+        <RadioButton value="right">
           <aicon type="align-right" />
         </RadioButton>
       </RadioGroup>

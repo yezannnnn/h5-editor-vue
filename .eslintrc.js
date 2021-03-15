@@ -25,5 +25,7 @@ module.exports = {
         'vue/valid-v-model': 'off',
         'no-else-return': 'off',
         'no-shadow': 'warn',
+        'indent': 'off',    
+        'import/no-cycle': 'off',
     },
 };

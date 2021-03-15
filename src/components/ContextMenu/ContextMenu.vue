@@ -4,6 +4,7 @@
       <template v-if="curComponent">
         <template>
           <li @click="deleteComponent">删除</li>
+          <li @click="copyComponent">复制</li>
           <li @click="topComponent">置顶</li>
           <li @click="bottomComponent">置底</li>
         </template>
@@ -69,7 +70,10 @@ export default {
       this.clickStatus();
       // this.$store.commit('recordSnapshot');
     },
-
+    copyComponent() {
+      this.$store.dispatch('sourceData/copyInSourceData', this.curComponent);
+      this.clickStatus();
+    },
     upComponent() {
       this.$store.dispatch('sourceData/upComponent');
       this.clickStatus();

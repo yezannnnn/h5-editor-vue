@@ -32,7 +32,6 @@ export default {
       e.dataTransfer.setData('clientWidth', e.target.clientWidth);
       e.dataTransfer.setData('clientHeight', e.target.clientHeight);
       e.dataTransfer.setData('offsetY', e.offsetY);
-      console.log(e);
     },
   },
 };

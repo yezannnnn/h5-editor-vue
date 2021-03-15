@@ -18,7 +18,7 @@ const state = {
         fontWeight: 400,
         color: '#000000',
         alignItems: 'center',
-        justifyContent: 'center',
+        textAlign: 'center',
       },
       isEdit: false,
     }
@@ -55,7 +55,7 @@ const state = {
         fontWeight: 400,
         color: '#000000',
         alignItems: 'center',
-        justifyContent: 'center',
+        textAlign: 'center',
       },
       looks: {
         borderWidth: 1,
@@ -92,6 +92,9 @@ const mutations = {
     if (width) state.curComponent.width = width;
     if (height) state.curComponent.height = height;
     if (rotate) state.curComponent.rotate = rotate;
+  },
+  setShapeSingleStyle({ curComponent }, { key, value }) {
+    curComponent[key] = value;
   },
 };
 const actions = {};

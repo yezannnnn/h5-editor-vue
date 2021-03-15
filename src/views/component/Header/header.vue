@@ -5,7 +5,7 @@
       <div class='leftTitle'>银行活动页编辑器</div>
     </div>
     <div class="content">
-      <div class='btns'><Button type='primary'>模板库</Button></div>
+      <div class='btns'><Button type='primary' @click='setSourceData'>模板库</Button></div>
       <div class='btns'><Button class='btns' type="link" @click='saveVue'>保存模板</Button></div>
       <div class='btns'>
         <TooltipButton title="复制数据" placement="top" btnType="link" btnTitle="" @on-click='onCopyData' icon='copy' :btnDisabled='!curComponent' />
@@ -47,21 +47,31 @@ export default {
   computed: {
     ...mapState({
       curComponent: (state) => state.components.curComponent,
+      sourceData: (state) => state.sourceData.sourceData,
+      pageSetting: (state) => state.pageSetting.pageSetting,
     }),
   },
   methods: {
     onDelete() {
-      this.$store.dispatch('delSourceData', this.curComponent.id).then(() => {
+      this.$store.dispatch('delSourceData', this.curComponent).then(() => {
         Message.success('删除成功！');
       });
     },
     onCopyData() {
-      this.$store.dispatch('copyInSourceData').then(() => {
+      this.$store.dispatch('sourceData/copyInSourceData', this.curComponent.id).then(() => {
         Message.success('操作成功！');
       });
     },
     saveVue() {
-      this.$store.dispatch('makeVue');
+      // this.$store.dispatch('makeVue');
+      const data = { page: this.pageSetting, sourceData: this.sourceData };
+      this.$Api.template.makeTemplate({ title: 'template', pageData: data });
+    },
+    setSourceData() {
+      const sourceData = localStorage.getItem('sourceData');
+      if (sourceData) {
+        this.$store.commit('sourceData/setSourceData', JSON.parse(sourceData));
+      }
     },
   },
 };

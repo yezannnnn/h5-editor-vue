@@ -10,6 +10,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import eventBus from '@/utils/eventBus';
 import { mod360 } from '@/utils/translate';
 
 export default {
@@ -90,11 +91,20 @@ export default {
         pos.left = currX - startX + startLeft;
         // 修改当前组件样式
         this.$store.commit('components/setShapeStyle', pos);
+        this.$nextTick(() => {
+          // 触发元素移动事件，用于显示标线、吸附功能
+          // 后面两个参数代表鼠标移动方向
+          // curY - startY > 0 true 表示向下移动 false 表示向上移动
+          // curX - startX > 0 true 表示向右移动 false 表示向左移动
+          eventBus.$emit('move', currY - startY > 0, currX - startX > 0);
+        });
       };
 
       const up = () => {
         document.removeEventListener('mousemove', move);
         document.removeEventListener('mouseup', up);
+        // 触发元素停止移动事件，用于隐藏标线
+        eventBus.$emit('unmove');
       };
 
       document.addEventListener('mousemove', move);
@@ -229,7 +239,6 @@ export default {
         pointList,
         curComponent
       } = this;
-      console.log(curComponent);
       const rotate = mod360(curComponent.rotate); // 取余 360
       const result = {};
       let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度

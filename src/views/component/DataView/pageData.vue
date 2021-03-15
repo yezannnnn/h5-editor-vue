@@ -12,7 +12,7 @@
       <CollapsePanel key='2' header="背景图">
         <FormModel :model='form' labelAlign='left'>
           <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='Url'>
-            <Input type='textarea' size='small' v-model='pageSetting.backgroundUrl' placeholder='请输入在线Url（目前只支持网络图片）' @change='getImageInfo' />
+            <Input type='textarea' size='small' v-model='pageSetting.background' placeholder='请输入在线Url（目前只支持网络图片）' @change='getImageInfo' />
           </FormModelItem>
           <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='背景色'>
             <el-color-picker v-model='pageSetting.backgroundColor'></el-color-picker>

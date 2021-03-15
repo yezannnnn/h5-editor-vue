@@ -76,7 +76,7 @@ export default {
     white-space: normal;
     overflow-y: hidden;
     word-break: break-all;
-    display: flex;
+    width: 100%;
     // padding: 10px;
   }
 
