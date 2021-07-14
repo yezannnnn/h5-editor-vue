@@ -1,3 +1,5 @@
+import store from '../index';
+
 const state = {
   curComponent: null,
   baseComponentData: [{
@@ -36,6 +38,14 @@ const state = {
     props: {
       src: '',
       isEdit: false,
+      looks: {
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderRadius: 0,
+        isYuan: false,
+        borderColor: '#f3f3f3',
+        background: '#ffffff',
+      },
     }
   }, {
     id: 3,
@@ -50,6 +60,7 @@ const state = {
     component: () => import('@/components/BaseComponents/Rectangle/Rectangle.vue'),
     props: {
       text: '',
+      src: '',
       font: {
         fontSize: 14,
         fontWeight: 400,
@@ -97,7 +108,14 @@ const mutations = {
     curComponent[key] = value;
   },
 };
-const actions = {};
+const actions = {
+  reload({ commit }, data) {
+    data.forEach((item) => {
+      item.component = () => import('@/components/' + item.type + '/' + item.name + '/' + item.name + '.vue');
+    });
+    store.commit('sourceDate/setSourceData', data);
+  }
+};
 
 export default {
   namespaced: true,

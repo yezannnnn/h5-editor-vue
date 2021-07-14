@@ -62,10 +62,20 @@ export default {
         Message.success('操作成功！');
       });
     },
-    saveVue() {
+    async saveVue() {
       // this.$store.dispatch('makeVue');
       const data = { page: this.pageSetting, sourceData: this.sourceData };
-      this.$Api.template.makeTemplate({ title: 'template', pageData: data });
+      const res = await this.$Api.template.makeTemplate({ title: this.pageSetting.title, pageData: data });
+      const a = document.createElement('a');
+      a.download = '模板.zip';
+      a.style.display = 'none';
+      const blob = new Blob([res.data]);
+      a.href = URL.createObjectURL(blob);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      Message.success('下载成功！');
     },
     setSourceData() {
       const sourceData = localStorage.getItem('sourceData');

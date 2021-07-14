@@ -1,14 +1,18 @@
 <template>
   <div class="rectangle" :style='getStyles()'>
     <div class="infos" v-if='!isEdit'>矩形组件点击编辑...</div>
+    <vimage :src="src" v-if='src' fit='contain' />
     <div v-else class='value'>{{ text }}</div>
   </div>
 </template>
 <script>
+import { Image as vimage } from 'vant';
 
 export default {
   name: 'baseComponent',
-  components: {},
+  components: {
+    vimage
+  },
   props: {
     src: {
       type: String,
@@ -30,7 +34,7 @@ export default {
     text: {
       type: String,
       default: '',
-    }
+    },
   },
   data() {
     return {
@@ -76,7 +80,8 @@ export default {
   border-color: #f3f3f3;
   border-width: 1px;
   border-style: solid;
-  background-color: #fff;
+  // background-color: #fff;
+  overflow: hidden;
 
   .infos {
     display: flex;
@@ -99,5 +104,7 @@ export default {
 
   .value {}
 }
-
+/deep/ .van-image__img {
+  -webkit-user-drag: none;
+}
 </style>

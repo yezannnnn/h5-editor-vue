@@ -30,9 +30,8 @@ export default {
         password: this.password
       }).then((res) => {
         if (res.code === 200) {
-          Message.success(res.msg);
-          localStorage.setItem('token', res.data.token);
-          localStorage.setItem('account', res.data);
+          Message.success('登录成功！');
+          this.$store.dispatch('user/saveAccount', res.data.token, res.data);
           this.$router.push('/');
         } else {
           Message.error(res.msg);

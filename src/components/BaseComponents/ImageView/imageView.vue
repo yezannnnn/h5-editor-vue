@@ -1,9 +1,7 @@
 <template>
-  <div class="imageView" :style='{ "height": !isEdit ? "150px" : "100%", "background": !src ? "#f3f3f3" : "none" }'>
-    <!-- <div class="wrapper"> -->
-    <img v-if='!isEdit || !src' src="https://static.lianhaikeji.com/images/20210315/84ba23eb5f5748dd9dfef87ac56d7013.png" :style='looks' />
+  <div class="imageView" :style="{'height': !isEdit ? '150px' : '100%','background': !src ? '#f3f3f3' : 'none'}">
+    <img v-if='!isEdit || !src' src="https://static.lianhaikeji.com/images/20210315/84ba23eb5f5748dd9dfef87ac56d7013.png" />
     <vimage v-else fit='contain' :src="src" />
-    <!-- </div> -->
   </div>
 </template>
 <script>
@@ -14,7 +12,6 @@ export default {
   components: {
     vimage,
   },
-
   props: {
     src: {
       type: String,
@@ -25,7 +22,10 @@ export default {
       default: true,
     },
     looks: {
-      type: Object
+      type: Object,
+      default () {
+        return {};
+      }
     }
   },
   data() {
@@ -51,6 +51,15 @@ export default {
   justify-content: center;
   align-items: center;
   flex-flow: column;
+
+  .wap {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+  }
 
   img {
     width: 60px;

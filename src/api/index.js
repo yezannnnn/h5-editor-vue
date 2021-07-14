@@ -3,6 +3,7 @@ import axios from 'axios';
 // import store from '../store';
 import { Message } from 'ant-design-vue';
 import router from '../router';
+import store from '../store';
 import user from './modules/user';
 import template from './modules/template';
 
@@ -13,15 +14,25 @@ export function get(url, request = {}) {
   // body...
   return new Promise((resolve) => {
     const headers = { Authorization: 'Bearer ' + localStorage.getItem('token') };
-    axios.get(HOST + url, { params: request, headers: headers })
+    axios.get(HOST + url, {
+      params: request,
+      headers: headers
+    })
       .then((response) => {
         if (response.data.status === 'A0230') {
           router.push('/login');
         } else {
           resolve(response.data);
         }
-      }).catch((error) => {
-        Message.error(error);
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            Message.error('401身份过期，请重新登录！');
+            store.dispatch('user/clearAccount');
+            router.push('/login');
+          }
+        }
       });
   });
 }
@@ -30,6 +41,7 @@ export function post(url, request) {
   return new Promise((resolve) => {
     const headers = { Authorization: 'Bearer ' + localStorage.getItem('token') };
     if (token === null) delete headers.Authorization;
+
     axios.post(HOST + url, request, { headers: headers })
       .then((response) => {
         if (response.data.status === 'A0230') {
@@ -37,42 +49,42 @@ export function post(url, request) {
         } else {
           resolve(response.data);
         }
-      }).catch((error) => {
-        Message.error(error);
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            Message.error('401身份过期，请重新登录！');
+            store.dispatch('user/clearAccount');
+            router.push('/login');
+          }
+        }
       });
   });
 }
 
 // 文件流下载接口
-// export function downloadPost(url, request) {
-//   return new Promise((resolve, reject) => {
-//     var headers = {
-//       'Authorization': 'bearer ' + localStorage.getItem('token'),
-//       'client-type': 'browser',
-//       'Content-Type': 'application/json;',
-//       'Accept': 'application/json'
-//     }
-//     axios.post(HOST + url, request, { responseType: 'blob', headers: headers })
-//       .then(response => {
-//         // 用户登录过期
-//         if (response.data.status === 'A0230') {
-//           if (!isExpired) {
-//             Message.error(response.data.message)
-//             setTimeout(() => {
-//               isExpired = false
-//             }, 2000)
-//           }
-//           store.dispatch('user/resetToken')
-//           store.dispatch('tagsView/delAllViews')
-//           router.push(`/login`)
-//         } else {
-//           resolve(response)
-//         }
-//       }).catch(error => {
-//         console.log(error)
-//       })
-//   })
-// }
+export function downloadPost(url, request) {
+  return new Promise((resolve) => {
+    const headers = { Authorization: 'Bearer ' + localStorage.getItem('token') };
+    axios.post(HOST + url, request, {
+      responseType: 'blob',
+      headers: headers
+    })
+      .then((response) => {
+        // 用户登录过期
+        resolve(response);
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            Message.error('401身份过期，请重新登录！');
+            store.dispatch('user/clearAccount');
+            router.push('/login');
+          }
+        }
+      });
+  });
+}
 
 const api = {
   user: user,

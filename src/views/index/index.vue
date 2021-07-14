@@ -1,15 +1,15 @@
 <template>
   <div class="index">
-    <Header />
+    <Header/>
     <div class="container">
-      <MediaBox />
+      <MediaBox/>
       <div class="canvas">
         <!-- 定位画布 -->
         <div class="returnBack" title="定位回画布"></div>
-        <Graduation />
-        <SourceBox />
+        <Graduation/>
+        <SourceBox/>
       </div>
-      <DataView />
+      <DataView/>
     </div>
   </div>
 </template>
@@ -31,9 +31,24 @@ export default {
     DataView,
     Graduation,
   },
-  methods: {}
+  data() {
+    return {
+      id: null,
+    };
+  },
+  methods: {},
+  async mounted() {
+    this.id = this.$route.query.id;
+    const res = await this.$Api.template.getPageInfo({ id: this.id });
+    if (res.code === 200) {
+      // console.log(res);
+      this.$message.success('加载组件成功！');
+      this.$store.commit('pageSetting/setPageSetting', res.data.page);
+      this.$store.commit('sourceData/setSourceData', res.data.sourceData);
+      await this.$store.dispatch('components/reload', res.data.sourceData);
+    }
+  }
 };
-
 </script>
 <style lang="less" scoped>
 .container {

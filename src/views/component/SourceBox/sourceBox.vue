@@ -5,13 +5,14 @@
     </div>
     <div class="canvas">
       <div class='sourceBox' id='sourceBox' :style='getBackgroundStyle()' @drop="handleDrop" @dragover.prevent>
-        <Shape v-for='(item,index) in sourceData' :style="getShapeStyle(item)" :key='index' :dom='item' :active='item === curComponent'>
-          <DynamiComponent :currentComp='item.component' :propsOption='item.props' />
+        <Shape v-for='(item,index) in sourceData' :style="getShapeStyle(item)" :key='index' :dom='item'
+               :active='item === curComponent'>
+          <DynamiComponent :currentComp='item.component' :propsOption='item.props'/>
         </Shape>
         <!-- 右键菜单 -->
-        <ContextMenu />
+        <ContextMenu/>
         <!-- 标线 -->
-        <MakeLine />
+        <MakeLine/>
       </div>
     </div>
     <!-- <div class="bottomBtns">
@@ -73,12 +74,12 @@ export default {
       comp.id = new Date().getTime();
       this.$store.commit('sourceData/addSourceData', comp);
     },
-    handleDragOver() {},
+    handleDragOver() {
+    },
     handleMouseDown(e, index) {
       const component = this.sourceComponents[index];
       const pos = {};
       e.stopPropagation();
-
       this.$store.commit('components/setComponentStatus', 'drop');
       this.$store.commit('components/setCurComponent', component);
       this.$store.commit('pageSetting/clearCurPage');
@@ -106,8 +107,10 @@ export default {
       document.addEventListener('mousemove', move);
       document.addEventListener('mouseup', up);
     },
-    handleMouseMove() {},
-    handleMouseUp() {},
+    handleMouseMove() {
+    },
+    handleMouseUp() {
+    },
     getShapeStyle(style) {
       const result = {};
       ['width', 'height', 'top', 'left', 'rotate'].forEach((attr) => {
@@ -146,7 +149,11 @@ export default {
     handleContextmenu(e) {
       e.stopPropagation();
       e.preventDefault();
-      let { target, offsetY: top, offsetX: left } = e;
+      let {
+        target,
+        offsetY: top,
+        offsetX: left
+      } = e;
       while (target instanceof SVGElement) {
         target = target.parentNode;
       }
@@ -160,13 +167,17 @@ export default {
       // const top = e.pageY - e.layerY;
       // const left = e.pageX - e.layerX;
       this.$store.commit('components/setComponentStatus', 'click');
-      this.$store.commit('contextMenu/showContextMenu', { top, left });
+      this.$store.commit('contextMenu/showContextMenu', {
+        top,
+        left
+      });
     },
   },
   created() {
-    this.sourceData.forEach((item) => {
-      item.component = () => import('@/components/' + item.type + '/' + item.name + '/' + item.name + '.vue');
-    });
+    this.$store.dispatch('components/reload', this.sourceData);
+    // this.sourceData.forEach((item) => {
+    //   item.component = () => import('@/components/' + item.type + '/' + item.name + '/' + item.name + '.vue');
+    // });
   },
   mounted() {
     this.getBackgroundStyle();
@@ -218,7 +229,7 @@ export default {
   transition: transform .3s ease-out;
   // overflow-x: hidden;
   // overflow-y: scroll;
-  height: 664px;
+  min-height: 664px;
   left: 300px;
   top: 100px;
   box-shadow: -2px 0 4px 0 rgb(0 0 0 / 10%);
