@@ -14,7 +14,9 @@
         <TabPane tab="外观" key='1'>
           <styleData />
         </TabPane>
-        <TabPane tab="事件" key='2'></TabPane>
+        <TabPane tab="事件" key='2'>
+          <enevtData />
+        </TabPane>
       </Tabs>
     </div>
     <!-- 页面设置属性 -->
@@ -30,6 +32,7 @@ import {
 import { mapState } from 'vuex';
 import styleData from './styleData.vue';
 import pageData from './pageData.vue';
+import enevtData from './eventData.vue';
 
 const { TabPane } = Tabs;
 export default {
@@ -39,6 +42,7 @@ export default {
     TabPane,
     styleData,
     pageData,
+    enevtData,
   },
   data() {
     return {
@@ -68,6 +72,7 @@ export default {
 
 </script>
 <style lang="less" scoped>
+@import "../../../style/ant-less.less";
 .floatRight {
   width: 0px !important;
 }
@@ -129,99 +134,6 @@ export default {
     }
   }
 
-}
-
-// tabs
-/deep/ .ant-tabs-bar {
-  margin: 0;
-}
-
-/deep/ .ant-tabs-nav-wrap {
-  display: flex;
-}
-
-/deep/ .ant-tabs-tab {
-  margin: 0 12px;
-  padding: 12px 0px;
-}
-
-// co
-/deep/ .ant-collapse {
-  background: none;
-
-  .ant-collapse-header {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgb(65, 80, 88);
-    line-height: 20px;
-    text-align: left !important;
-  }
-}
-
-// from
-/deep/ .ant-form label {
-  font-size: 12px;
-  color: rgb(65, 80, 88);
-}
-
-// input
-/deep/ .ant-input {
-  border-radius: 0px;
-  font-size: 12px;
-}
-
-// nums
-/deep/ .ant-input-number {
-  border-radius: 0px;
-}
-
-/deep/ .ant-input-number-sm input {
-  font-size: 12px;
-}
-
-// select
-/deep/ .ant-select-sm {
-  font-size: 12px;
-}
-
-// formitem
-/deep/ .ant-form-item {
-  margin-bottom: 12px;
-}
-
-// colorPicker
-
-/deep/ .el-color-picker {
-  display: flex;
-  align-items: center;
-}
-
-/deep/ .el-color-dropdown__btns {
-  display: flex;
-  align-items: center;
-}
-
-/deep/ .el-color-picker__trigger {
-  width: 25px;
-  height: 25px;
-}
-
-// fromitem
-/deep/ .ant-form-item-control {
-  text-align: left;
-}
-
-// radio
-/deep/ .ant-radio-button-wrapper:first-child {
-  border-radius: 0px;
-}
-
-/deep/ .ant-radio-button-wrapper:last-child {
-  border-radius: 0px;
-}
-
-/deep/ .ant-select-selection {
-  border-radius: 0px;
 }
 
 </style>

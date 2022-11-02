@@ -14,7 +14,7 @@
       </Select>
     </FormModelItem>
     <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='文本对齐'>
-      <RadioGroup default-value="left" button-style="solid" size='small' v-model='curComponent && curComponent.props.font.textAlign'>
+      <RadioGroup default-value="left" button-style="solid" size='small' v-model='curComponent && curComponent.props.font.justifyContent'>
         <RadioButton value="left">
           <aicon type="align-left" />
         </RadioButton>

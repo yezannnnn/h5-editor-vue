@@ -65,7 +65,7 @@ export default {
     async saveVue() {
       // this.$store.dispatch('makeVue');
       const data = { page: this.pageSetting, sourceData: this.sourceData };
-      const res = await this.$Api.template.makeTemplate({ title: this.pageSetting.title, pageData: data });
+      const res = await this.$Api.template.makeTemplate({ id: this.$route.query.id, title: this.pageSetting.title, pageData: data });
       const a = document.createElement('a');
       a.download = '模板.zip';
       a.style.display = 'none';

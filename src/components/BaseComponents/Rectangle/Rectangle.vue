@@ -71,7 +71,11 @@ export default {
 
 </script>
 <style lang="less" scoped>
+.rectangle::-webkit-scrollbar {
+  display: none;
+}
 .rectangle {
+  line-height: 1.5;
   user-select: none;
   width: 100%;
   height: 100%;
@@ -81,9 +85,8 @@ export default {
   border-width: 1px;
   border-style: solid;
   // background-color: #fff;
-  overflow: hidden;
-
   .infos {
+    width: 100%;
     display: flex;
     height: 50px;
     justify-content: center;
@@ -96,13 +99,15 @@ export default {
     outline: none;
     resize: none;
     white-space: normal;
-    overflow-y: hidden;
     word-break: break-all;
     display: flex;
-    // padding: 10px;
+    width: 100%;
+    overflow-y: scroll;
+    height: 100%;
   }
-
-  .value {}
+  .value::-webkit-scrollbar {
+    display: none;
+  }
 }
 /deep/ .van-image__img {
   -webkit-user-drag: none;

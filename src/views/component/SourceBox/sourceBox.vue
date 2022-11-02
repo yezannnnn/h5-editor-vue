@@ -14,7 +14,9 @@
         <!-- 标线 -->
         <MakeLine/>
       </div>
+      <!-- <div class="dropbtn" ref="dropDom"></div> -->
     </div>
+
     <!-- <div class="bottomBtns">
       容器高度：{{ this.pageSetting.height > 664 ? this.pageSetting.height + '（可滚动）' : this.pageSetting.height }}
     </div> -->
@@ -135,7 +137,11 @@ export default {
       if (!this.pageSetting.background) {
         styles.background = this.pageSetting.backgroundColor;
       } else {
-        styles.background = `url(${this.pageSetting.background})`;
+        if (styles.background) {
+          styles.background = styles.background.indexOf('url(') === 0 ? styles.background : `url(${this.pageSetting.background})`;
+        } else {
+          styles.background = `url(${this.pageSetting.background})`;
+        }
         styles.backgroundSize = this.pageSetting.backgroundSize;
         styles.backgroundRepeat = this.pageSetting.backgroundRepeat;
         styles.backgroundPosition = this.pageSetting.backgroundPosition;
@@ -172,15 +178,46 @@ export default {
         left
       });
     },
+    moveHandle(nowClient, dom) {
+      let changeHight = nowClient - 103;
+      let remainHight = document.body.clientHeight - nowClient;
+      // 下面两个判断是控制拖动的最大范围，不能完全覆盖
+      if (changeHight < 100) {
+        changeHight = 100;
+        nowClient = 100 + 103;
+        remainHight = document.body.clientHeight - nowClient;
+      }
+      if (remainHight < 100) {
+        remainHight = 100;
+        nowClient = document.body.clientHeight - 100;
+        changeHight = document.body.clientHeight - 203;
+      }
+      this.pageSetting.height = changeHight;
+      dom.style.height = changeHight + 'px';
+      // this.$refs.bottomDom.style.height = remainHight + 'px'
+    },
   },
   created() {
     this.$store.dispatch('components/reload', this.sourceData);
-    // this.sourceData.forEach((item) => {
-    //   item.component = () => import('@/components/' + item.type + '/' + item.name + '/' + item.name + '.vue');
-    // });
   },
   mounted() {
+    const that = this;
     this.getBackgroundStyle();
+    this.dropDom = this.$refs.dropDom;
+    this.$nextTick(() => {
+      that.dropDom.onmousedown = function (e) {
+        // _this.clientStartX = e.clientY
+        console.log(e);
+        document.onmousemove = function () {
+          that.moveHandle(e.clientY, this.dropDom);
+          // return false
+        };
+        document.onmouseup = function () {
+          document.onmousemove = null;
+          document.onmouseup = null;
+        };
+      };
+    });
   },
 };
 
@@ -239,6 +276,20 @@ export default {
 .sourceBox {
   background-color: #fff;
   overflow: hidden;
+}
+
+.dropbtn {
+  height: 30px;
+  background: #f3f3f3;
+  cursor: ns-resize;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropbtn:hover {
+  background: #d9d9d9;
 }
 
 </style>

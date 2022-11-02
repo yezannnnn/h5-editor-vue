@@ -12,6 +12,13 @@ const state = {
     top: 0,
     left: 0,
     position: 'absolute',
+    event: {
+      click: {
+        link: '',
+        linkType: 'local'
+      },
+      extra: '',
+    },
     component: () => import('@/components/BaseComponents/TextView/TextView.vue'),
     props: {
       text: '文本内容点击编辑...',
@@ -20,7 +27,7 @@ const state = {
         fontWeight: 400,
         color: '#000000',
         alignItems: 'center',
-        textAlign: 'center',
+        justifyContent: 'center',
       },
       isEdit: false,
     }
@@ -34,6 +41,13 @@ const state = {
     top: 0,
     left: 0,
     position: 'absolute',
+    event: {
+      click: {
+        link: '',
+        linkType: 'local'
+      },
+      extra: '',
+    },
     component: () => import('@/components/BaseComponents/ImageView/ImageView.vue'),
     props: {
       src: '',
@@ -57,6 +71,13 @@ const state = {
     top: 0,
     left: 0,
     position: 'absolute',
+    event: {
+      click: {
+        link: '',
+        linkType: 'local'
+      },
+      extra: '',
+    },
     component: () => import('@/components/BaseComponents/Rectangle/Rectangle.vue'),
     props: {
       text: '',
@@ -104,16 +125,20 @@ const mutations = {
     if (height) state.curComponent.height = height;
     if (rotate) state.curComponent.rotate = rotate;
   },
-  setShapeSingleStyle({ curComponent }, { key, value }) {
+  setShapeSingleStyle({ curComponent }, {
+    key,
+    value
+  }) {
     curComponent[key] = value;
   },
 };
 const actions = {
+  // eslint-disable-next-line no-unused-vars
   reload({ commit }, data) {
     data.forEach((item) => {
       item.component = () => import('@/components/' + item.type + '/' + item.name + '/' + item.name + '.vue');
     });
-    store.commit('sourceDate/setSourceData', data);
+    store.commit('sourceData/setSourceData', data);
   }
 };
 

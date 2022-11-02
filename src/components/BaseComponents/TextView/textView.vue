@@ -1,8 +1,8 @@
 <template>
-  <div class="textView" :style='getStyles()'>
+  <div class="textView">
     <div class="infos" v-if='!isEdit'>文本内容点击编辑...</div>
-    <div v-else class='value'>{{ text }}</div>
-    <div v-if='!isEdit && isHtml' class="value" v-html='text'></div>
+    <div v-else class='value' :style='getStyles()'>{{ text }}</div>
+    <div v-if='!isEdit && isHtml' class="value" :style='getStyles()' v-html='text'></div>
   </div>
 </template>
 <script>
@@ -55,6 +55,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .textView {
+  line-height: 1.5;
   user-select: none;
   width: 100%;
   height: 100%;
@@ -66,21 +67,23 @@ export default {
     height: 50px;
     justify-content: center;
     align-items: center;
-
   }
 
   .value {
     border: solid 0px;
     outline: none;
     resize: none;
+    display: flex;
     white-space: normal;
-    overflow-y: hidden;
     word-break: break-all;
+    overflow-y: scroll;
     width: 100%;
+    height: 100%;
     // padding: 10px;
   }
-
-  .value {}
+  .value::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 </style>

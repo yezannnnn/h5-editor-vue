@@ -2,17 +2,33 @@
   <div>
     <div class="p_h">页面设置</div>
     <Collapse :activeKey='activeAttr' expandIconPosition='right' :bordered='false'>
-      <CollapsePanel key='1' header="页面标题">
+      <CollapsePanel key='1' header="坐标及宽高">
+        <arow type='flex' justify="space-around" style='margin-bottom: 12px;'>
+          <acol :span='8'>
+            <InputNumber disabled :formatter="value => `W ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                         :parser="value => value.replace(/W\s?|(,*)/g, '')" v-model='pageSetting.width' size="small"
+                         style='width: 90%'/>
+          </acol>
+          <acol :span='8'>
+            <InputNumber :formatter="value => `H ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                         :parser="value => value.replace(/\H\s?|(,*)/g, '')" v-model='pageSetting.height' size="small"
+                         style='width: 90%'/>
+          </acol>
+          <acol :span='8'></acol>
+        </arow>
+      </CollapsePanel>
+      <CollapsePanel key='2' header="页面标题">
         <FormModel :model='form' labelAlign='left'>
           <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='标题'>
-            <Input size='small' placeholder='请输入标题' v-model='pageSetting.title' />
+            <Input size='small' placeholder='请输入标题' v-model='pageSetting.title'/>
           </FormModelItem>
         </FormModel>
       </CollapsePanel>
-      <CollapsePanel key='2' header="背景图">
+      <CollapsePanel key='3' header="背景图">
         <FormModel :model='form' labelAlign='left'>
           <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='Url'>
-            <Input type='textarea' size='small' v-model='pageSetting.background' placeholder='请输入在线Url（目前只支持网络图片）' @change='getImageInfo' />
+            <Input type='textarea' size='small' v-model='pageSetting.background' placeholder='请输入在线Url（目前只支持网络图片）'
+                   @change='getImageInfo'/>
           </FormModelItem>
           <FormModelItem :labelCol='{span:6}' :wrapperCol='{span:18}' label='背景色'>
             <el-color-picker v-model='pageSetting.backgroundColor'></el-color-picker>
@@ -28,6 +44,9 @@ import {
   Collapse,
   FormModel,
   Input,
+  InputNumber,
+  Col as acol,
+  Row as arow,
 } from 'ant-design-vue';
 
 const CollapsePanel = Collapse.Panel;
@@ -35,6 +54,9 @@ const FormModelItem = FormModel.Item;
 export default {
   name: 'pageData',
   components: {
+    InputNumber,
+    acol,
+    arow,
     Collapse,
     CollapsePanel,
     FormModel,
@@ -52,7 +74,7 @@ export default {
       const that = this;
       const img = new Image();
       img.src = e.currentTarget.value;
-      img.onload = function() {
+      img.onload = function () {
         const ratio = Math.floor(img.width / 375);
         const height = Math.floor(img.height / ratio);
 

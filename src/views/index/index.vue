@@ -1,39 +1,37 @@
 <template>
   <div class="index">
-    <Header/>
+    <Header />
     <div class="container">
-      <MediaBox/>
+      <MediaBox />
       <div class="canvas">
         <!-- 定位画布 -->
         <div class="returnBack" title="定位回画布"></div>
-        <Graduation/>
-        <SourceBox/>
+        <Graduation />
+        <SourceBox />
       </div>
-      <DataView/>
+      <DataView />
     </div>
   </div>
 </template>
 <script>
-import Header from '@/views/component/Header/header.vue';
-import MediaBox from '@/views/component/MediaBox/mediaBox.vue';
-import DataView from '@/views/component/DataView/dataView.vue';
-import Graduation from '@/views/component/Graduation/graduation.vue';
-import SourceBox from '@/views/component/SourceBox/sourceBox.vue';
+import Header from "@/views/component/Header/header.vue";
+import MediaBox from "@/views/component/MediaBox/mediaBox.vue";
+import DataView from "@/views/component/DataView/dataView.vue";
+import Graduation from "@/views/component/Graduation/graduation.vue";
+import SourceBox from "@/views/component/SourceBox/sourceBox.vue";
 
-// import { Button } from 'ant-design-vue';
-// import { Button as vanButton } from 'vant';
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     Header,
     MediaBox,
     SourceBox,
     DataView,
-    Graduation,
+    Graduation
   },
   data() {
     return {
-      id: null,
+      id: null
     };
   },
   methods: {},
@@ -41,11 +39,9 @@ export default {
     this.id = this.$route.query.id;
     const res = await this.$Api.template.getPageInfo({ id: this.id });
     if (res.code === 200) {
-      // console.log(res);
-      this.$message.success('加载组件成功！');
-      this.$store.commit('pageSetting/setPageSetting', res.data.page);
-      this.$store.commit('sourceData/setSourceData', res.data.sourceData);
-      await this.$store.dispatch('components/reload', res.data.sourceData);
+      this.$message.success("加载组件成功！");
+      await this.$store.commit("pageSetting/setPageSetting", res.data.page);
+      await this.$store.dispatch("components/reload", res.data.sourceData);
     }
   }
 };
@@ -83,5 +79,4 @@ export default {
     width: 0;
   }
 }
-
 </style>

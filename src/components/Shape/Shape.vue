@@ -1,38 +1,50 @@
 <template>
-  <div class="shape" :class="{ active: this.active }" @click="selectCurComponent" @mousedown="handleMouseDown" @contextmenu="handleContextMenu">
+  <div
+    class="shape"
+    :class="{ active: this.active }"
+    @click="selectCurComponent"
+    @mousedown="handleMouseDown"
+    @contextmenu="handleContextMenu"
+  >
     <span class="icon-xiangyouxuanzhuan" v-show="this.active" @mousedown="handleRotate">
-      <img :src="require('@/assets/rotate.png')">
+      <img :src="require('@/assets/rotate.png')" />
     </span>
-    <div class="shape-point" v-for="(item, index) in (active? pointList : [])" @mousedown="handleMouseDownOnPoint(item, $event)" :key="index" :style="getPointStyle(item)">
-    </div>
+    <div
+      class="shape-point"
+      v-for="(item, index) in active ? pointList : []"
+      @mousedown="handleMouseDownOnPoint(item, $event)"
+      :key="index"
+      :style="getPointStyle(item)"
+    ></div>
     <slot></slot>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-import eventBus from '@/utils/eventBus';
-import { mod360 } from '@/utils/translate';
+import { mapState } from "vuex";
+import eventBus from "@/utils/eventBus";
+import { mod360 } from "@/utils/translate";
 
 export default {
-  name: 'shape',
+  name: "shape",
   components: {},
   props: {
     dom: {
       type: Object,
-      default () {
+      default() {
         return {};
       }
     },
     active: {
       type: Boolean,
-      default: false,
+      default: false
     }
   },
   data() {
     return {
-      pointList: ['t', 'r', 'b', 'l', 'lt', 'rt', 'lb', 'rb'],
+      pointList: ["t", "r", "b", "l", "lt", "rt", "lb", "rb"],
       cursors: {},
-      initialAngle: { // 每个点对应的初始角度
+      initialAngle: {
+        // 每个点对应的初始角度
         lt: 0,
         t: 45,
         rt: 90,
@@ -40,24 +52,25 @@ export default {
         rb: 180,
         b: 225,
         lb: 270,
-        l: 315,
+        l: 315
       },
-      angleToCursor: [ // 每个范围的角度对应的光标
-        { start: 338, end: 23, cursor: 'nw' },
-        { start: 23, end: 68, cursor: 'n' },
-        { start: 68, end: 113, cursor: 'ne' },
-        { start: 113, end: 158, cursor: 'e' },
-        { start: 158, end: 203, cursor: 'se' },
-        { start: 203, end: 248, cursor: 's' },
-        { start: 248, end: 293, cursor: 'sw' },
-        { start: 293, end: 338, cursor: 'w' },
-      ],
+      angleToCursor: [
+        // 每个范围的角度对应的光标
+        { start: 338, end: 23, cursor: "nw" },
+        { start: 23, end: 68, cursor: "n" },
+        { start: 68, end: 113, cursor: "ne" },
+        { start: 113, end: 158, cursor: "e" },
+        { start: 158, end: 203, cursor: "se" },
+        { start: 203, end: 248, cursor: "s" },
+        { start: 248, end: 293, cursor: "sw" },
+        { start: 293, end: 338, cursor: "w" }
+      ]
     };
   },
   computed: {
     ...mapState({
-      curComponent: (state) => state.components.curComponent,
-    }),
+      curComponent: state => state.components.curComponent
+    })
   },
   mounted() {
     if (this.curComponent) {
@@ -72,9 +85,9 @@ export default {
       const pos = {};
       e.stopPropagation();
 
-      this.$store.commit('components/setComponentStatus', 'drop');
-      this.$store.commit('components/setCurComponent', component);
-      this.$store.commit('pageSetting/clearCurPage');
+      this.$store.commit("components/setComponentStatus", "drop");
+      this.$store.commit("components/setCurComponent", component);
+      this.$store.commit("pageSetting/clearCurPage");
 
       const startY = e.clientY;
       const startX = e.clientX;
@@ -84,31 +97,31 @@ export default {
 
       this.cursors = this.getCursor(); // 根据旋转角度获取光标位置
 
-      const move = (moveEvent) => {
+      const move = moveEvent => {
         const currX = moveEvent.clientX;
         const currY = moveEvent.clientY;
         pos.top = currY - startY + startTop;
         pos.left = currX - startX + startLeft;
         // 修改当前组件样式
-        this.$store.commit('components/setShapeStyle', pos);
+        this.$store.commit("components/setShapeStyle", pos);
         this.$nextTick(() => {
           // 触发元素移动事件，用于显示标线、吸附功能
           // 后面两个参数代表鼠标移动方向
           // curY - startY > 0 true 表示向下移动 false 表示向上移动
           // curX - startX > 0 true 表示向右移动 false 表示向左移动
-          eventBus.$emit('move', currY - startY > 0, currX - startX > 0);
+          eventBus.$emit("move", currY - startY > 0, currX - startX > 0);
         });
       };
 
       const up = () => {
-        document.removeEventListener('mousemove', move);
-        document.removeEventListener('mouseup', up);
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
         // 触发元素停止移动事件，用于隐藏标线
-        eventBus.$emit('unmove');
+        eventBus.$emit("unmove");
       };
 
-      document.addEventListener('mousemove', move);
-      document.addEventListener('mouseup', up);
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
     },
     handleContextMenu() {},
     getPointStyle(point) {
@@ -139,11 +152,11 @@ export default {
       }
 
       const style = {
-        marginLeft: hasR ? '-4px' : '-4px',
-        marginTop: '-4px',
+        marginLeft: hasR ? "-4px" : "-4px",
+        marginTop: "-4px",
         left: `${newLeft}px`,
         top: `${newTop}px`,
-        cursor: this.cursors[point],
+        cursor: this.cursors[point]
       };
 
       return style;
@@ -163,7 +176,7 @@ export default {
 
       // 是否需要保存快照
       // let needSave = false;
-      const move = (moveEvent) => {
+      const move = moveEvent => {
         // needSave = true;
         const currX = moveEvent.clientX;
         const currY = moveEvent.clientY;
@@ -179,17 +192,17 @@ export default {
         pos.width = newWidth > 0 ? newWidth : 0;
         pos.left = left + (hasL ? disX : 0);
         pos.top = top + (hasT ? disY : 0);
-        this.$store.commit('components/setShapeStyle', pos);
+        this.$store.commit("components/setShapeStyle", pos);
       };
 
       const up = () => {
-        document.removeEventListener('mousemove', move);
-        document.removeEventListener('mouseup', up);
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
         // needSave && this.$store.commit('recordSnapshot')
       };
 
-      document.addEventListener('mousemove', move);
-      document.addEventListener('mouseup', up);
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
     },
     handleRotate(e) {
       // this.$store.commit('setClickComponentStatus', true)
@@ -210,7 +223,7 @@ export default {
 
       // 如果元素没有移动，则不保存快照
       // let hasMove = false;
-      const move = (moveEvent) => {
+      const move = moveEvent => {
         // hasMove = true;
         const curX = moveEvent.clientX;
         const curY = moveEvent.clientY;
@@ -219,43 +232,38 @@ export default {
         // 获取旋转的角度值
         pos.rotate = startRotate + rotateDegreeAfter - rotateDegreeBefore;
         // 修改当前组件样式
-        this.$store.commit('components/setShapeStyle', pos);
+        this.$store.commit("components/setShapeStyle", pos);
       };
 
       const up = () => {
         // hasMove && this.$store.commit('recordSnapshot');
-        document.removeEventListener('mousemove', move);
-        document.removeEventListener('mouseup', up);
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
         this.cursors = this.getCursor(); // 根据旋转角度获取光标位置
       };
 
-      document.addEventListener('mousemove', move);
-      document.addEventListener('mouseup', up);
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
     },
     getCursor() {
-      const {
-        angleToCursor,
-        initialAngle,
-        pointList,
-        curComponent
-      } = this;
+      const { angleToCursor, initialAngle, pointList, curComponent } = this;
       const rotate = mod360(curComponent.rotate); // 取余 360
       const result = {};
       let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
-      pointList.forEach((point) => {
+      pointList.forEach(point => {
         const angle = mod360(initialAngle[point] + rotate);
         const len = angleToCursor.length;
         while (true) {
           lastMatchIndex = (lastMatchIndex + 1) % len;
           const angleLimit = angleToCursor[lastMatchIndex];
           if (angle < 23 || angle >= 338) {
-            result[point] = 'nw-resize';
+            result[point] = "nw-resize";
 
             return;
           }
 
           if (angleLimit.start <= angle && angle < angleLimit.end) {
-            result[point] = angleLimit.cursor + '-resize';
+            result[point] = angleLimit.cursor + "-resize";
 
             return;
           }
@@ -263,10 +271,9 @@ export default {
       });
 
       return result;
-    },
-  },
+    }
+  }
 };
-
 </script>
 <style lang="less" scoped>
 .shape {
@@ -315,5 +322,4 @@ export default {
     height: 18px;
   }
 }
-
 </style>
